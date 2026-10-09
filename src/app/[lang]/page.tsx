@@ -37,10 +37,10 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           <Photo
             src="/images/hero.jpg"
             alt={lang === "es" ? "Pitcher de high school en el momento de aterrizaje del pie delantero, bullpen al aire libre en Miami" : "High school pitcher at front-foot landing, outdoor bullpen in Miami"}
-            className="absolute inset-0 h-full"
+            fillParent
             sizes="100vw"
             priority
-            position="72% 30%"
+            className="[&_img]:object-[60%_0%] md:[&_img]:object-[72%_30%]"
             shade={false}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-ink/80 via-ink/30 to-transparent" aria-hidden="true" />

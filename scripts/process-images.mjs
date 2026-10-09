@@ -6,12 +6,12 @@ const src = process.argv[2];
 const out = "public/images";
 const jobs = [
   ["00.png", "hero.jpg", 2200],
-  ["01.png", "bullpen.jpg", 1800, { left: 0.12 }],
+  ["01.png", "bullpen.jpg", 1800, { left: 0.2 }],
   ["03.png", "radar.jpg", 1800],
   ["15.png", "coach.jpg", 1400],
   ["04.png", "college-navy.jpg", 1400],
-  ["05b.png", "college-maroon.jpg", 1400],
-  ["06b.png", "college-green.jpg", 1400],
+  ["05f.png", "college-maroon.jpg", 1400],
+  ["06e.png", "college-green.jpg", 1400],
   ["07b.png", "wall-1.jpg", 900],
   ["08.png", "wall-2.jpg", 900],
   ["09p.png", "wall-3.jpg", 900],
@@ -23,7 +23,7 @@ const jobs = [
   ["14.png", "remote.jpg", 1800],
   ["16.png", "parents.jpg", 1800],
   ["17.png", "armcare.jpg", 1800],
-  ["18.png", "grip.jpg", 1800],
+  ["18b.png", "grip.jpg", 1800],
   ["19.png", "catcher.jpg", 1800],
 ];
 for (const [inName, outName, width, crop] of jobs) {

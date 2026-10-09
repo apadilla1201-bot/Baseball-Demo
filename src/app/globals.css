@@ -52,9 +52,10 @@ body {
   color: var(--color-chalk);
 }
 
-@layer components {
-/* Display type */
-.display {
+/* ---- Custom utilities (registered with Tailwind so responsive variants and
+   ordinary utilities like `hidden` or `absolute` can override them) ---- */
+
+@utility display {
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 0.92;
@@ -62,44 +63,26 @@ body {
   text-transform: uppercase;
 }
 
-.display-tight {
+@utility display-tight {
   font-family: var(--font-display);
   font-weight: 600;
   line-height: 0.95;
   letter-spacing: -0.01em;
 }
 
-.eyebrow {
+@utility eyebrow {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.num {
+@utility num {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
 
-/* Layout helpers */
-.wrap {
-  width: 100%;
-  max-width: 88rem;
-  margin-inline: auto;
-  padding-inline: 1rem;
-}
-@media (min-width: 40rem) {
-  .wrap { padding-inline: 1.5rem; }
-}
-@media (min-width: 64rem) {
-  .wrap { padding-inline: 2.5rem; }
-}
-
-.rule { border-top: 1px solid var(--color-line); }
-.dark .rule, .rule-dark { border-top-color: var(--color-line-dark); }
-
-/* Buttons: squared, no shadow */
-.btn {
+@utility btn {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
@@ -113,28 +96,70 @@ body {
   border: 1px solid currentColor;
   transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
 }
-.btn-clay { background: var(--color-clay); color: var(--color-chalk); border-color: var(--color-clay); }
-.btn-clay:hover { background: var(--color-clay-2); border-color: var(--color-clay-2); }
-.btn-ink { background: var(--color-ink); color: var(--color-paper); border-color: var(--color-ink); }
-.btn-ink:hover { background: var(--color-ink-3); }
-.btn-ghost { background: transparent; }
-.btn-ghost:hover { background: var(--color-ink); color: var(--color-paper); }
-.dark .btn-ghost:hover { background: var(--color-paper); color: var(--color-ink); }
+@utility btn-clay {
+  background: var(--color-clay);
+  color: var(--color-chalk);
+  border-color: var(--color-clay);
+  &:hover { background: var(--color-clay-2); border-color: var(--color-clay-2); }
+}
+@utility btn-ink {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  border-color: var(--color-ink);
+  &:hover { background: var(--color-ink-3); }
+}
+@utility btn-ghost {
+  background: transparent;
+  &:hover { background: var(--ghost-hover-bg); color: var(--ghost-hover-fg); }
+}
 
-.link-ul {
+@utility link-ul {
   text-decoration: underline;
   text-underline-offset: 0.2em;
   text-decoration-thickness: 1px;
+  &:hover { text-decoration-color: var(--color-clay); }
 }
-.link-ul:hover { text-decoration-color: var(--color-clay); }
 
-/* Native details for FAQ */
+@utility photo {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-ink-3);
+  & img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  &::after {
+    content: "";
+    display: var(--photo-shade, block);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(18,18,18,0.18), rgba(18,18,18,0) 40%);
+    mix-blend-mode: multiply;
+  }
+}
+@utility no-shade {
+  --photo-shade: none;
+}
+
+/* ---- Plain CSS (no conflicts with utilities) ---- */
+
+:root { --ghost-hover-bg: var(--color-ink); --ghost-hover-fg: var(--color-paper); }
+.dark { --ghost-hover-bg: var(--color-paper); --ghost-hover-fg: var(--color-ink); }
+
+.wrap {
+  width: 100%;
+  max-width: 88rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+@media (min-width: 40rem) { .wrap { padding-inline: 1.5rem; } }
+@media (min-width: 64rem) { .wrap { padding-inline: 2.5rem; } }
+
+.rule { border-top: 1px solid var(--color-line); }
+.dark .rule, .rule-dark { border-top-color: var(--color-line-dark); }
+
 details > summary { list-style: none; cursor: pointer; }
 details > summary::-webkit-details-marker { display: none; }
 details[open] .faq-plus { transform: rotate(45deg); }
 .faq-plus { transition: transform 160ms ease; }
-
-}
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
@@ -148,22 +173,6 @@ details[open] .faq-plus { transform: rotate(45deg); }
   outline-offset: 2px;
 }
 
-/* Photo grain overlay (subtle, consistent grade) */
-.photo {
-  position: relative;
-  overflow: hidden;
-  background: var(--color-ink-3);
-}
-.photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(to top, rgba(18,18,18,0.18), rgba(18,18,18,0) 40%);
-  mix-blend-mode: multiply;
-}
-.photo.no-shade::after { display: none; }
 
 /* Velo chart draw */
 @keyframes draw { to { stroke-dashoffset: 0; } }

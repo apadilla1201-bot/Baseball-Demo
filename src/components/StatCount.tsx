@@ -11,11 +11,11 @@ export function StatCount({ value, prefix = "", suffix = "", className = "" }: {
     const el = ref.current;
     if (!el) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      setN(value);
-      return;
-    }
     let raf = 0;
+    if (reduce) {
+      raf = requestAnimationFrame(() => setN(value));
+      return () => cancelAnimationFrame(raf);
+    }
     const io = new IntersectionObserver(
       ([e]) => {
         if (!e.isIntersecting) return;

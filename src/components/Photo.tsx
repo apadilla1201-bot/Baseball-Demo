@@ -9,6 +9,7 @@ export function Photo({
   priority = false,
   position,
   shade = true,
+  fillParent = false,
 }: {
   src: string;
   alt: string;
@@ -18,9 +19,10 @@ export function Photo({
   priority?: boolean;
   position?: string;
   shade?: boolean;
+  fillParent?: boolean;
 }) {
   return (
-    <div className={`photo ${shade ? "" : "no-shade"} ${className}`} style={ratio ? { aspectRatio: ratio } : undefined}>
+    <div className={`photo ${shade ? "" : "no-shade"} ${className}`} style={{ ...(ratio ? { aspectRatio: ratio } : {}), ...(fillParent ? { position: "absolute" as const, inset: 0 } : {}) }}>
       <Image src={src} alt={alt} fill sizes={sizes} priority={priority} style={{ objectFit: "cover", objectPosition: position }} />
     </div>
   );

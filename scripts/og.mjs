@@ -1,0 +1,10 @@
+import { chromium } from "playwright-core";
+const [input, output] = process.argv.slice(2);
+const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium-1194/chrome-linux/chrome", args: ["--no-sandbox", "--allow-file-access-from-files"] });
+const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
+await page.goto("file://" + input, { waitUntil: "load" });
+await page.evaluate(() => document.fonts.ready);
+await page.waitForTimeout(300);
+await page.screenshot({ path: output, type: "jpeg", quality: 86 });
+await browser.close();
+console.log("wrote", output);

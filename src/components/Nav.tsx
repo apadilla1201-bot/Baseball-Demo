@@ -22,7 +22,6 @@ export function Nav({ lang, t }: { lang: Locale; t: Dict["nav"] }) {
   const [open, setOpen] = useState(false);
   const other = otherLocale(lang);
 
-  useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -96,7 +95,7 @@ export function Nav({ lang, t }: { lang: Locale; t: Dict["nav"] }) {
             <ul className="flex flex-col">
               {items.map((it, i) => (
                 <li key={it.key} className="border-b border-line-dark">
-                  <Link href={href(lang, it.route)} className="display flex items-baseline justify-between py-4 text-[2.6rem]">
+                  <Link href={href(lang, it.route)} onClick={() => setOpen(false)} className="display flex items-baseline justify-between py-4 text-[2.6rem]">
                     <span>{t[it.key]}</span>
                     <span className="num text-sm text-stone-2">0{i + 1}</span>
                   </Link>
@@ -104,7 +103,7 @@ export function Nav({ lang, t }: { lang: Locale; t: Dict["nav"] }) {
               ))}
             </ul>
             <div className="mt-auto pt-10">
-              <Link href={href(lang, "book")} className="btn btn-clay w-full justify-between text-[1.2rem]">
+              <Link href={href(lang, "book")} onClick={() => setOpen(false)} className="btn btn-clay w-full justify-between text-[1.2rem]">
                 {t.book} <span aria-hidden="true">→</span>
               </Link>
             </div>

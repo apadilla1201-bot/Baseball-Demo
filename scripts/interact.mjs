@@ -1,0 +1,56 @@
+import { chromium } from "playwright-core";
+const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium-1194/chrome-linux/chrome", args: ["--no-sandbox"] });
+const out = process.argv[2];
+const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+const errors = [];
+page.on("pageerror", (e) => errors.push(String(e)));
+// language toggle + mobile menu
+await page.goto("http://localhost:3000/en/pitching", { waitUntil: "networkidle" });
+await page.getByRole("link", { name: "Cambiar a español" }).click();
+await page.waitForURL("**/es/pitching");
+console.log("lang toggle ->", page.url(), "html lang =", await page.evaluate(() => document.documentElement.lang));
+await page.getByRole("button", { name: "Menú" }).click();
+await page.waitForTimeout(300);
+await page.screenshot({ path: `${out}/menu-mobile.png` });
+// cookie redirect
+await page.goto("http://localhost:3000/", { waitUntil: "networkidle" });
+console.log("root redirect with es cookie ->", page.url());
+// intake form
+await page.setViewportSize({ width: 1280, height: 900 });
+await page.goto("http://localhost:3000/en/book", { waitUntil: "networkidle" });
+await page.getByRole("button", { name: /Next/ }).click();
+console.log("step1 errors shown:", await page.getByRole("alert").count());
+await page.fill("#athleteName", "Tomás Vidal");
+await page.fill("#parentName", "Carla Vidal");
+await page.fill("#email", "carla@example.com");
+await page.fill("#phone", "(305) 555-0188");
+await page.getByRole("button", { name: /Next/ }).click();
+await page.selectOption("#gradYear", "2027");
+await page.getByLabel("High school, varsity").check();
+await page.getByLabel("Right").check();
+await page.fill("#velo", "84");
+await page.fill("#gpa", "3.8");
+await page.getByRole("button", { name: /Next/ }).click();
+await page.getByLabel("Velocity").check();
+await page.getByLabel("Getting recruited").check();
+await page.getByLabel("Yes, start now").check();
+await page.getByRole("button", { name: /Next/ }).click();
+await page.getByLabel("No arm injuries").check();
+await page.getByRole("button", { name: /Next/ }).click();
+await page.screenshot({ path: `${out}/book-step5.png` });
+await page.getByRole("button", { name: /Send the request/ }).click();
+console.log("consent error shown:", await page.getByRole("alert").count());
+await page.getByLabel("In-person in Doral").check();
+await page.getByLabel("Either").check();
+await page.getByText("I understand this is a request").click();
+await page.getByRole("button", { name: /Send the request/ }).click();
+await page.waitForSelector("[role=status]");
+await page.screenshot({ path: `${out}/book-success.png` });
+console.log("success:", (await page.textContent("[role=status] h2"))?.trim());
+// results chart draw + faq
+await page.goto("http://localhost:3000/en/results", { waitUntil: "networkidle" });
+await page.locator("#jayden-baptiste").scrollIntoViewIfNeeded();
+await page.waitForTimeout(1800);
+await page.locator("#jayden-baptiste").screenshot({ path: `${out}/results-case.png` });
+console.log("page errors:", errors);
+await browser.close();
