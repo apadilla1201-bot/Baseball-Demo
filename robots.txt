@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://apadilla1201-bot.github.io/Baseball-Demo/sitemap.xml

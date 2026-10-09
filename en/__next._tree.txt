@@ -1,0 +1,5 @@
+:HL["/Baseball-Demo/_next/static/chunks/429f0fx9s7dv_.css","style"]
+:HC["/",""]
+2:[["children",{"s":"__PAGE__","h":128}]]
+1:[["children",{"s":{"n":"lang","t":"d","k":"en","s":[]},"h":48,"c":"$Q2"}]]
+0:{"b":"97NBJvw3cvhWBh3nkMJbN","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
