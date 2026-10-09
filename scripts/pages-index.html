@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rivas Pitching Co.</title>
+<meta name="robots" content="noindex">
+<script>
+  // Static-host stand-in for proxy.ts: pick the language, then go to it.
+  (function () {
+    var m = document.cookie.match(/(?:^|; )lang=(en|es)/);
+    var lang = m ? m[1] : (/^es/i.test(navigator.language || "") ? "es" : "en");
+    var base = location.pathname.replace(/\/index\.html$/, "").replace(/\/$/, "");
+    location.replace(base + "/" + lang + "/");
+  })();
+</script>
+<meta http-equiv="refresh" content="0; url=en/">
+</head>
+<body><p><a href="en/">English</a> · <a href="es/">Español</a></p></body>
+</html>

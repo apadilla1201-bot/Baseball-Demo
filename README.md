@@ -29,8 +29,17 @@ docs/DESIGN_BRIEF.md   brand, type, color, layout, imagery rules
 
 ## Deploy
 
-Vercel: import the repo, framework preset **Next.js**, no env vars required.
-Set `NEXT_PUBLIC_SITE_URL` to the production URL so canonical / Open Graph URLs are absolute.
+**GitHub Pages (automatic).** `.github/workflows/pages.yml` builds a static export on every push
+to `main` and publishes it at `https://<owner>.github.io/<repo>/`. The workflow sets
+`GITHUB_PAGES=true`, which switches `next.config.ts` to `output: "export"` with a `basePath`,
+unoptimized images and no Cache Components. The locale redirect (`src/proxy.ts`) cannot run on a
+static host, so `scripts/pages-index.html` does the same thing in the browser at the site root.
+
+**Vercel.** Import the repo, framework preset **Next.js**, no env vars required. Set
+`NEXT_PUBLIC_SITE_URL` to the production URL so canonical / Open Graph URLs are absolute.
+Vercel builds use the full server build (image optimization, edge redirect).
+
+`prebuild` generates `public/robots.txt` and `public/sitemap.xml` for whichever host is being built.
 
 ## Notes
 

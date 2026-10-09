@@ -1,5 +1,8 @@
 import Image from "next/image";
 
+// Static-export builds (GitHub Pages) live under a sub-path; Vercel builds use "".
+const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export function Photo({
   src,
   alt,
@@ -23,7 +26,7 @@ export function Photo({
 }) {
   return (
     <div className={`photo ${shade ? "" : "no-shade"} ${className}`} style={{ ...(ratio ? { aspectRatio: ratio } : {}), ...(fillParent ? { position: "absolute" as const, inset: 0 } : {}) }}>
-      <Image src={src} alt={alt} fill sizes={sizes} priority={priority} style={{ objectFit: "cover", objectPosition: position }} />
+      <Image src={`${base}${src}`} alt={alt} fill sizes={sizes} priority={priority} style={{ objectFit: "cover", objectPosition: position }} />
     </div>
   );
 }
